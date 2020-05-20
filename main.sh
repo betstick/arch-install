@@ -10,4 +10,4 @@ parted -a optimal $diskname mklabel GPT
 echo "Creating UEFI partition..."
 parted -a optimal $diskname mkpart primary 0% 512MB
 echo "Creating root partition..."
-parted -s $diskname mkpart primary ext4 512 100%
+parted -s $diskname mkpart primary 512 100% 100%
