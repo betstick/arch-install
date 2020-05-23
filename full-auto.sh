@@ -1,7 +1,6 @@
 #!/bin/sh
 #this only works if you use qemu vms lul. not making this generic.
-#dd if=/dev/zero of=/dev/vda count=512
-dd if=/dev/zero of=/dev/vda count=512
+dd if=/dev/zero of=/dev/vda count=1000000
 parted -a optimal /dev/vda mklabel GPT
 parted -a optimal /dev/vda mkpart primary 0% 512
 parted -a optimal /dev/vda mkpart primary 512 100%
@@ -12,17 +11,13 @@ mkdir /mnt/boot
 mount /dev/vda1 /mnt/boot
 pacstrap /mnt base linux linux-firmware dhcpcd netctl grub efibootmgr nano
 genfstab -U /mnt >> /mnt/etc/fstab
-arch-chroot /mnt
-touch /etc/hosts
-echo $'127.0.0.1	localhost\n::1	localhost\n127.0.1.1	autoarch.localdomain	autoarch' > /etc/hosts
-touch /etc/hostname
+echo -e "127.0.0.1	localhost\n::1	localhost\n127.0.1.1	autoarch.localdomain	autoarch" > /mnt/etc/hosts
 echo autoarch > /etc/hostname
-echo $'Interface=enp1s0\nConnection=ethernet\nIP=dhcp' > /etc/netctl/main
-netctl enable main
-#pacman -S  grub efibootmgr
-grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=ARCH
-mkinitcpio -P
-grub-mkconfig -o /boot/grub/grub.cfg
-mkinitcpio -P #hehe
-exit
-#TODO FINISH THE FILE
+echo -e "Interface=enp1s0\nConnection=ethernet\nIP=dhcp" > /mnt/etc/netctl/main
+#listen, it was either this nonsense, or i had to create a second script...
+arch-chroot /mnt netctl enable main
+arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=ARCH
+arch-chroot /mnt mkinitcpio -P
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+arch-chroot /mnt mkinitcpio -P #hehe
+arch-chroot /mnt echo "password" | password --stdin root
