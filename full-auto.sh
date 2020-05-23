@@ -1,6 +1,6 @@
 #!/bin/sh
 #this only works if you use qemu vms lul. not making this generic.
-dd if=/dev/zero of=/dev/vda count=1000000
+dd if=/dev/zero of=/dev/vda count=200000
 parted -a optimal /dev/vda mklabel GPT
 parted -a optimal /dev/vda mkpart primary 0% 512
 parted -a optimal /dev/vda mkpart primary 512 100%
@@ -20,4 +20,4 @@ arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/ --bootl
 arch-chroot /mnt mkinitcpio -P
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 arch-chroot /mnt mkinitcpio -P #hehe
-arch-chroot /mnt echo "password" | password --stdin root
+arch-chroot /mnt echo "root:passwd" | chpasswd
