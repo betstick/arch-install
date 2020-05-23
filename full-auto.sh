@@ -25,3 +25,4 @@ arch-chroot /mnt mkinitcpio -P #hehe
 echo -e 'echo "root:password" | chpasswd' > /mnt/password
 chmod +x /mnt/password
 arch-chroot /mnt ./password
+rm /mnt/password
