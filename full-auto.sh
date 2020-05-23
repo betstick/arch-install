@@ -1,4 +1,4 @@
-#!/binsh
+#!/bin/sh
 #this only works if you use qemu vms lul. not making this generic.
 dd if=/dev/zer of=/dev/vda count=512
 parted -a optimal /dev/vda mklabel GPT
