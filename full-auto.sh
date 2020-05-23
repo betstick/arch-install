@@ -9,16 +9,19 @@ mkfs.ext4 /dev/vda2
 mount /dev/vda2 /mnt
 mkdir /mnt/boot
 mount /dev/vda1 /mnt/boot
-pacstrap /mnt base linux linux-firmware dhcpcd netctl
+pacstrap /mnt base linux linux-firmware dhcpcd netctl grub efibootmgr nano
 genfstab -U /mnt >> /mnt/etc/fstab
 arch-chroot /mnt
+touch /etc/hosts
 echo $'127.0.0.1	localhost\n::1	localhost\n127.0.1.1	autoarch.localdomain	autoarch' > /etc/hosts
-echo autoarch >  /etc/hostname
+touch /etc/hostname
+echo autoarch > /etc/hostname
 echo $'Interface=enp1s0\nConnection=ethernet\nIP=dhcp' > /etc/netctl/main
 netctl enable main
-pacman -S  grub efibootmgr
+#pacman -S  grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot/ --bootloader-id=ARCH
 mkinitcpio -P
 grub-mkconfig -o /boot/grub/grub.cfg
 mkinitcpio -P #hehe
+exit
 #TODO FINISH THE FILE
