@@ -1,6 +1,6 @@
 #!/bin/sh
 #this only works if you use qemu vms lul. not making this generic.
-dd if=/dev/zero of=/dev/vda count=200000
+dd if=/dev/zero of=/dev/vda count=1000000
 parted -a optimal /dev/vda mklabel GPT
 parted -a optimal /dev/vda mkpart primary 0% 512
 parted -a optimal /dev/vda mkpart primary 512 100%
