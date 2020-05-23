@@ -21,4 +21,7 @@ arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot/ --bootl
 #arch-chroot /mnt mkinitcpio -P
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 arch-chroot /mnt mkinitcpio -P #hehe
-arch-chroot /mnt echo '"root:password" | chpasswd'
+#arch-chroot /mnt eval 'echo "root:password" | chpasswd'
+echo -e 'echo "root:password" | chpasswd' > /mnt/password
+chmod +x /mnt/password
+arch-chroot /mnt ./password
